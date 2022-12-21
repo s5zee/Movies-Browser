@@ -15,6 +15,7 @@ import useQueryParameter from "../../useQueryParameter";
 import { NoResult } from "../../../common/states/NoResult";
 import { fetchGenres } from "../../../common/tiles/MovieTile/Genre/genreSlice";
 import { Pagination } from "../../../common/Pagination";
+import { useReplaceQueryParameter } from "../../useReplaceQueryParameter";
 
 export const MovieList = () => {
   const dispatch = useDispatch();
@@ -24,8 +25,13 @@ export const MovieList = () => {
   const [page, setPage] = useState(1);
   const totalPages = useSelector(selectPopularMoviesTotalPages);
   const totalResults = useSelector(selectPopularMoviesTotalResults);
+  const replaceQueryParameter = useReplaceQueryParameter();
 
   useEffect(() => {
+    replaceQueryParameter({
+      key: "page",
+      value: page,
+    });
     dispatch(fetchPopularMovies({ page, query }));
     dispatch(fetchGenres());
   }, [dispatch, page, query]);
